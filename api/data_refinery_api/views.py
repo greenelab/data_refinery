@@ -1685,9 +1685,24 @@ class ComputedFilesList(generics.ListAPIView):
     """
     computed_files_list
 
-    ComputedFiles are representation of files created by data-refinery processes.
+    ComputedFiles are representation of files created by refinebio processes.
 
-    This can also be used to fetch all the compendia files we have generated with:
+    It's possible to download each one of these files by providing a valid token. To
+    acquire and activate an API key see the documentation for the [/token](#tag/token) endpoint.
+    When a valid token is provided the url will be sent back in the field `download_url`. Example:
+
+    ```py
+    import requests
+    import json
+
+    headers = {
+        'Content-Type': 'application/json',
+        'API-KEY': token_id # requested from /token
+    }
+    requests.get('https://api.refine.bio/v1/computed_files/?id=5796866', {}, headers=headers)
+    ```
+
+    This endpoint can also be used to fetch all the compendia files we have generated with:
     ```
     GET /computed_files?is_compendia=True&is_public=True
     ```

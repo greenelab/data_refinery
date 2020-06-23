@@ -2,7 +2,7 @@
 # related to networking.
 
 provider "aws" {
-  version = "1.37.0"
+  version = "1.60.0"
   region = "${var.region}"
 }
 
