@@ -4,7 +4,7 @@
 #
 #    pip-compile requirements.in
 #
-asgiref==3.3.1
+asgiref==3.3.4
     # via django
 certifi==2020.6.20
     # via
@@ -24,7 +24,7 @@ django-elasticsearch-dsl==6.5.0
     #   django-elasticsearch-dsl-drf
 django-nine==0.2.3
     # via django-elasticsearch-dsl-drf
-django==3.1.7
+django==3.2.2
     # via
     #   -r requirements.in
     #   djangorestframework
@@ -68,8 +68,10 @@ pytz==2020.1
     # via
     #   django
     #   pandas
-pyyaml==5.3.1
-    # via vcrpy
+pyyaml==5.4.1
+    # via
+    #   -r requirements.in
+    #   vcrpy
 raven==6.10.0
     # via -r requirements.in
 requests==2.24.0
@@ -92,7 +94,9 @@ sqlparse==0.3.1
 tqdm==4.48.0
     # via geoparse
 typing-extensions==3.7.4.2
-    # via yarl
+    # via
+    #   asgiref
+    #   yarl
 urllib3==1.25.10
     # via
     #   elasticsearch

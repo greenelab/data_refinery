@@ -4,7 +4,7 @@
 #
 #    pip-compile requirements.in
 #
-asgiref==3.3.1
+asgiref==3.3.4
     # via django
 boto3==1.16.4
     # via -r requirements.in
@@ -30,7 +30,7 @@ django-elasticsearch-dsl==6.5.0
     #   django-elasticsearch-dsl-drf
 django-nine==0.2.3
     # via django-elasticsearch-dsl-drf
-django==3.1.7
+django==3.2.2
     # via
     #   -r requirements.in
     #   djangorestframework
@@ -69,8 +69,10 @@ python-nomad==1.2.1
     # via -r requirements.in
 pytz==2020.1
     # via django
-pyyaml==5.3.1
-    # via vcrpy
+pyyaml==5.4.1
+    # via
+    #   -r requirements.in
+    #   vcrpy
 raven==6.10.0
     # via -r requirements.in
 requests==2.24.0
@@ -92,7 +94,9 @@ six==1.15.0
 sqlparse==0.4.1
     # via django
 typing-extensions==3.7.4.3
-    # via yarl
+    # via
+    #   asgiref
+    #   yarl
 urllib3==1.25.11
     # via
     #   -r requirements.in

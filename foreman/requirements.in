@@ -1,4 +1,4 @@
-django>=2.2.18
+django>=3.1.8
 psycopg2-binary>=2.8.4
 requests>=2.20.0
 retrying
@@ -13,4 +13,5 @@ django-elasticsearch-dsl==6.5.0
 django-elasticsearch-dsl-drf>=0.17.1
 elasticsearch-dsl>=6.1.0
 vcrpy
+pyyaml>=5.4
 django-computedfields

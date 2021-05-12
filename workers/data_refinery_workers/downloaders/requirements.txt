@@ -4,7 +4,7 @@
 #
 #    pip-compile requirements.in
 #
-asgiref==3.3.1
+asgiref==3.3.4
     # via django
 certifi==2020.6.20
     # via requests
@@ -16,7 +16,7 @@ coveralls==2.1.1
     # via -r requirements.in
 django-computedfields==0.1.3
     # via -r requirements.in
-django==3.1.7
+django==3.2.2
     # via -r requirements.in
 docopt==0.6.2
     # via coveralls
@@ -34,8 +34,10 @@ python-nomad==1.2.1
     # via -r requirements.in
 pytz==2020.1
     # via django
-pyyaml==5.3.1
-    # via vcrpy
+pyyaml==5.4.1
+    # via
+    #   -r requirements.in
+    #   vcrpy
 requests==2.24.0
     # via
     #   -r requirements.in
@@ -50,7 +52,9 @@ six==1.15.0
 sqlparse==0.3.1
     # via django
 typing-extensions==3.7.4.2
-    # via yarl
+    # via
+    #   asgiref
+    #   yarl
 urllib3==1.25.10
     # via
     #   -r requirements.in

@@ -6,7 +6,7 @@
 #
 apscheduler==3.6.3
     # via -r requirements.in
-asgiref==3.3.1
+asgiref==3.3.4
     # via django
 boto3==1.16.4
     # via -r requirements.in
@@ -44,7 +44,7 @@ django-hstore==1.4.2
     # via djangorestframework-hstore
 django-nine==0.2.3
     # via django-elasticsearch-dsl-drf
-django==3.1.7
+django==3.2.2
     # via
     #   -r requirements.in
     #   django-cors-headers
@@ -129,6 +129,8 @@ six==1.15.0
     #   python-dateutil
 sqlparse==0.4.1
     # via django
+typing-extensions==3.10.0.0
+    # via asgiref
 tzlocal==2.1
     # via apscheduler
 uritemplate==3.0.1
