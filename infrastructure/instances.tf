@@ -372,23 +372,6 @@ resource "aws_spot_fleet_request" "cheap_ram" {
 # Database
 ##
 
-# Temporary. This will go away once we can delete things.
-resource "aws_db_parameter_group" "postgres_parameters" {
-  name = "postgres-parameters-${var.user}-${var.stage}"
-  description = "Postgres Parameters ${var.user} ${var.stage}"
-  family = "postgres9.6"
-
-  parameter {
-    name = "deadlock_timeout"
-    value = "60000" # 60000ms = 60s
-  }
-
-  parameter {
-    name = "statement_timeout"
-    value = "60000" # 60000ms = 60s
-  }
-}
-
 resource "aws_db_parameter_group" "postgres_parameter_group" {
   name = "postgres-parameter-group-${var.user}-${var.stage}"
   description = "Postgres Parameters ${var.user} ${var.stage}"
@@ -402,6 +385,11 @@ resource "aws_db_parameter_group" "postgres_parameter_group" {
   parameter {
     name = "statement_timeout"
     value = "60000" # 60000ms = 60s
+  }
+
+  parameter {
+    name = "log_checkpoints"
+    value = false
   }
 }
 
