@@ -307,7 +307,7 @@ class GeoSurveyor(ExternalSourceSurveyor):
                 ExperimentOrganismAssociation.objects.get_or_create(
                     experiment=experiment_object, organism=organism
                 )
-                sample_object.title = sample.metadata["title"][0]
+                sample_object.title = harmony.extract_title(sample.metadata)
 
                 self.set_platform_properties(sample_object, sample.metadata, gse)
 

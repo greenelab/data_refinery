@@ -1,5 +1,5 @@
 {
-    "jobDefinitionName": "${{USER}}_${{STAGE}}_ILLUMINA_${{RAM}}",
+    "jobDefinitionName": "${{USER}}_${{STAGE}}_ILLUMINA_TO_PCL_${{RAM}}",
     "type": "container",
     "parameters": {
         "job_name": "",

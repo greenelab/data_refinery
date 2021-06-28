@@ -27,11 +27,10 @@ def extract_title(sample: Dict) -> str:
         "extract name",
     ]
     title_fields = add_variants(title_fields)
-    for key, value in sorted(sample.items(), key=lambda x: x[0].lower()):
-        lower_key = key.lower().strip()
 
-        if lower_key in title_fields:
-            return value
+    for title_field in title_fields:
+        if title_field in sample:
+            return sample[title_field]
 
     # If we can't even find a unique title for this sample
     # something has gone horribly wrong.
@@ -724,6 +723,6 @@ def preprocess_geo(items: List) -> List:
 
             # Probably won't be a list with length greater than one,
             # but maybe?
-            new_sample[key] = " ".join(value)
+            new_sample[key.lower()] = " ".join(value)
         preprocessed_samples.append(new_sample)
     return preprocessed_samples
