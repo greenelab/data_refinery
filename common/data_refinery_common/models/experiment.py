@@ -8,7 +8,7 @@ from data_refinery_common.models.managers import ProcessedPublicObjectsManager, 
 
 
 class Experiment(models.Model):
-    """ An Experiment or Study """
+    """An Experiment or Study"""
 
     class Meta:
         db_table = "experiments"
@@ -66,7 +66,7 @@ class Experiment(models.Model):
     last_modified = models.DateTimeField(default=timezone.now)
 
     def save(self, *args, **kwargs):
-        """ On save, update timestamps """
+        """On save, update timestamps"""
         current_time = timezone.now()
         if not self.id:
             self.created_at = current_time
@@ -81,7 +81,7 @@ class Experiment(models.Model):
         return super(Experiment, self).save(*args, **kwargs)
 
     def update_num_samples(self):
-        """ Update our cache values """
+        """Update our cache values"""
         aggregates = self.samples.aggregate(
             num_total_samples=Count("id"),
             num_processed_samples=Count("id", filter=Q(is_processed=True)),
@@ -95,7 +95,7 @@ class Experiment(models.Model):
         self.save()
 
     def to_metadata_dict(self):
-        """ Render this Experiment as a dict """
+        """Render this Experiment as a dict"""
 
         metadata = {}
         metadata["title"] = self.title
@@ -128,7 +128,7 @@ class Experiment(models.Model):
         return metadata
 
     def get_sample_keywords(self):
-        """ Get the human-readable name of all of the keywords that are defined
+        """Get the human-readable name of all of the keywords that are defined
         on at least one sample
         """
         keywords = set()
@@ -139,7 +139,7 @@ class Experiment(models.Model):
         return list(keywords)
 
     def get_sample_metadata_fields(self):
-        """ Get all metadata fields that are non-empty for at least one sample in the experiment.
+        """Get all metadata fields that are non-empty for at least one sample in the experiment.
         See https://github.com/AlexsLemonade/refinebio-frontend/issues/211 for why this is needed.
         """
         fields = []
@@ -178,28 +178,25 @@ class Experiment(models.Model):
         self.platform_accession_codes = self.get_platform_accession_codes()
 
     def get_sample_technologies(self):
-        """ Get a list of unique technologies for all of the associated samples
-        """
+        """Get a list of unique technologies for all of the associated samples"""
         return list(set([sample.technology for sample in self.samples.all()]))
 
     def get_platform_names(self):
-        """ Get a list of unique platforms for all of the associated samples
-        """
+        """Get a list of unique platforms for all of the associated samples"""
         return list(set([sample.platform_name for sample in self.samples.all()]))
 
     def get_platform_accession_codes(self):
-        """ Get a list of unique platforms for all of the associated samples
-        """
+        """Get a list of unique platforms for all of the associated samples"""
         return list(set([sample.platform_accession_code for sample in self.samples.all()]))
 
     @property
     def platforms(self):
-        """ Returns a list of related pipelines """
+        """Returns a list of related pipelines"""
         return list(set([sample.platform_name for sample in self.samples.all()]))
 
     @property
     def pretty_platforms(self):
-        """ Returns a prettified list of related pipelines """
+        """Returns a prettified list of related pipelines"""
         return list(set([sample.pretty_platform for sample in self.samples.all()]))
 
     @property
@@ -209,13 +206,21 @@ class Experiment(models.Model):
         )
 
     @property
-    def organism_names(self):
-        """ Get a list of unique organism names that has at least one downloadable sample """
+    def downloadable_organism_names(self):
+        """Get a list of unique organism names that has at least one downloadable sample"""
         result = (
             self.samples.filter(is_processed=True, organism__qn_target__isnull=False)
             .values_list("organism__name", flat=True)
             .distinct()
         )
+
+        return list(result)
+
+    @property
+    def organism_names(self):
+        """Get a list of unique organism names"""
+        result = self.samples.values_list("organism__name", flat=True).distinct()
+
         return list(result)
 
     @property

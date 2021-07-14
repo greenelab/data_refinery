@@ -35,8 +35,8 @@ standard_keyword = analyzer("standard_keyword", tokenizer="keyword", filter=[],)
 
 @experiment_index.doc_type
 class ExperimentDocument(Document):
-    """ Our Experiment ElasticSearch Document, which
-    corresponds to our Experiment model. """
+    """Our Experiment ElasticSearch Document, which
+    corresponds to our Experiment model."""
 
     # Keyword Fields
     title = fields.TextField(
@@ -55,6 +55,9 @@ class ExperimentDocument(Document):
         analyzer=html_strip_no_stop, fielddata=True, fields={"raw": fields.KeywordField()}
     )
     organism_names = fields.TextField(
+        analyzer=html_strip_no_ngram, fielddata=True, fields={"raw": fields.KeywordField()}
+    )
+    downloadable_organism_names = fields.TextField(
         analyzer=html_strip_no_ngram, fielddata=True, fields={"raw": fields.KeywordField()}
     )
     platform_names = fields.TextField(
@@ -93,5 +96,5 @@ class ExperimentDocument(Document):
         ]
 
     def get_queryset(self):
-        """ Override default queryset """
+        """Override default queryset"""
         return super(ExperimentDocument, self).get_queryset().order_by("id")

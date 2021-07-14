@@ -164,9 +164,12 @@ class ESTestCases(APITestCase):
         self.assertEqual(response.json()["facets"]["technology"]["microarray"], 1)
         self.assertEqual(response.json()["facets"]["technology"]["rna-seq"], 0)
         self.assertEqual(
-            list(response.json()["facets"]["organism_names"].keys()), [ECOLI_STRAIN_NAME]
+            list(response.json()["facets"]["downloadable_organism_names"].keys()),
+            [ECOLI_STRAIN_NAME],
         )
-        self.assertEqual(response.json()["facets"]["organism_names"][ECOLI_STRAIN_NAME], 1)
+        self.assertEqual(
+            response.json()["facets"]["downloadable_organism_names"][ECOLI_STRAIN_NAME], 1
+        )
 
         # Basic Search
         response = self.client.get(

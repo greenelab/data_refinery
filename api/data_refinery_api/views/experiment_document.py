@@ -141,6 +141,7 @@ class ExperimentDocumentSerializer(DocumentSerializer):
             "platform_names",
             "platform_accession_codes",
             "organism_names",
+            "downloadable_organism_names",
             "pubmed_id",
             "num_total_samples",
             "num_processed_samples",
@@ -236,7 +237,7 @@ requests.post(host + '/v1/search/', json.dumps(search), headers=headers)
     ),
 )
 class ExperimentDocumentView(DocumentViewSet):
-    """ ElasticSearch powered experiment search. """
+    """ElasticSearch powered experiment search."""
 
     document = ExperimentDocument
     serializer_class = ExperimentDocumentSerializer
@@ -282,6 +283,7 @@ class ExperimentDocumentView(DocumentViewSet):
         "alternate_accession_code": "alternate_accession_code",
         "platform": "platform_accession_codes",
         "organism": "organism_names.raw",
+        "downloadable_organism": "downloadable_organism_names.raw",
         "num_processed_samples": {
             "field": "num_processed_samples",
             "lookups": [LOOKUP_FILTER_RANGE, LOOKUP_QUERY_IN, LOOKUP_QUERY_GT],
@@ -321,8 +323,8 @@ class ExperimentDocumentView(DocumentViewSet):
             "facet": TermsFacet,
             "enabled": True,  # These are enabled by default, which is more expensive but more simple.
         },
-        "organism_names": {
-            "field": "organism_names.raw",
+        "downloadable_organism_names": {
+            "field": "downloadable_organism_names.raw",
             "facet": TermsFacet,
             "enabled": True,
             "options": {"size": 999999},
