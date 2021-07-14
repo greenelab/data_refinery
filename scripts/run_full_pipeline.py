@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import argparse
 import json
 import subprocess
@@ -49,7 +51,7 @@ def run_job(job):
         elif job_name == "SALMON":
             image_name = "salmon"
         elif job_name == "ILLUMINA_TO_PCL":
-            image_name == "illumina"
+            image_name = "illumina"
         elif job_name in ["TRANSCRIPTOME_INDEX_LONG", "TRANSCRIPTOME_INDEX_SHORT"]:
             image_name = "transcriptome"
         elif job_name == "NO_OP":

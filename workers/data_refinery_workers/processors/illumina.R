@@ -322,7 +322,7 @@ option_list = list(
               help="Probe ID", metavar="character"),
   make_option(c("-e", "--expression"), type="character", default=".AVG_Signal",
               help="expression", metavar="character"),
-  make_option(c("-d", "--detection"), type="character", default="Detection Pval",
+  make_option(c("-d", "--detection"), type="character", default="Detection[ _]Pval",
               help="Detection Pval", metavar="character"),
   make_option(c("-l", "--platform"), type="character", default="illuminaHumanv4",
               help="Platform", metavar="character"),
@@ -355,7 +355,7 @@ suppressPackageStartupMessages(library(paste(platform, ".db", sep=""), character
 
 # Read the data file
 message("Reading data file...")
-suppressWarnings(data <- fread(filePath, stringsAsFactors=FALSE, sep="\t", header=TRUE, autostart=10, data.table=FALSE, check.names=FALSE, fill=TRUE, na.strings="", showProgress=FALSE))
+suppressWarnings(data <- fread(filePath, stringsAsFactors=FALSE, sep="\t", header=TRUE, autostart=10, data.table=FALSE, check.names=FALSE, fill=TRUE, na.strings=c("", "NA"), showProgress=FALSE))
 
 # Check input paramters and parse out data we need
 if (probeIDColumn == ""){
@@ -377,8 +377,11 @@ if (length(exprColumns) == 0)
 exprData <- as.matrix(data[,exprColumns,drop=FALSE])
 rownames(exprData) <- probeIDs
 
+# Throw out NA rows
+exprData <- na.omit(exprData)
+
 if (detectionPValueColumnPattern == "")
-  detectionPValueColumnPattern <- "Detection Pval"
+  detectionPValueColumnPattern <- "Detection[ _]Pval"
 pValueColumns <- grep(detectionPValueColumnPattern, colnames(data), ignore.case=TRUE)
 
 if (length(pValueColumns) == 0)
@@ -425,7 +428,7 @@ normData <- normData[probesToKeep,,drop=FALSE]
 
 # Map probes to genes
 probeGene <- as.data.frame(probeGeneRef[mappedkeys(probeGeneRef)])
-rownames(probeGene) <- probeGene$IlluminaID
+rownames(probeGene) <- probeGene$probe_id
 probesToKeep <- sort(intersect(rownames(probeGene), rownames(exprData)))
 probeGene <- probeGene[probesToKeep,]
 

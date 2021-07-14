@@ -166,7 +166,7 @@ class GeoSurveyor(ExternalSourceSurveyor):
         return sample_object
 
     def get_miniml_url(self, experiment_accession_code):
-        """ Build the URL for the MINiML files for this accession code.
+        """Build the URL for the MINiML files for this accession code.
         ex:
         'GSE68061' -> 'ftp://ftp.ncbi.nlm.nih.gov/geo/series/GSE68nnn/GSE68061/miniml/GSE68061_family.xml.tgz'
 
@@ -210,7 +210,7 @@ class GeoSurveyor(ExternalSourceSurveyor):
 
     @staticmethod
     def _apply_metadata_to_experiment(experiment: Experiment, gse):
-        """ Gets the metadata out of gse and applies it to the experiment"""
+        """Gets the metadata out of gse and applies it to the experiment"""
         experiment.source_url = (
             "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=" + experiment.accession_code
         )
@@ -237,7 +237,7 @@ class GeoSurveyor(ExternalSourceSurveyor):
     def create_experiment_and_samples_from_api(
         self, experiment_accession_code
     ) -> (Experiment, List[Sample]):
-        """ The main surveyor - find the Experiment and Samples from NCBI GEO.
+        """The main surveyor - find the Experiment and Samples from NCBI GEO.
 
         Uses the GEOParse library, for which docs can be found here: https://geoparse.readthedocs.io/en/latest/usage.html#working-with-geo-objects
 
@@ -339,24 +339,29 @@ class GeoSurveyor(ExternalSourceSurveyor):
                     if supplementary_file_url == "NONE":
                         break
 
+                    lower_file_url = supplementary_file_url.lower()
+
                     # We never want these!
-                    if "idat.gz" in supplementary_file_url.lower():
-                        continue
-                    if ".chp" in supplementary_file_url.lower():
-                        continue
-                    if "chp.gz" in supplementary_file_url.lower():
-                        continue
-                    if "ndf.gz" in supplementary_file_url.lower():
-                        continue
-                    if "pos.gz" in supplementary_file_url.lower():
-                        continue
-                    if "pair.gz" in supplementary_file_url.lower():
-                        continue
-                    if "gff.gz" in supplementary_file_url.lower():
+                    if (
+                        "idat.gz" in lower_file_url
+                        or ".chp" in lower_file_url
+                        or "chp.gz" in lower_file_url
+                        or "ndf.gz" in lower_file_url
+                        or "pos.gz" in lower_file_url
+                        or "pair.gz" in lower_file_url
+                        or "gff.gz" in lower_file_url
+                        or "sdf.gz" in lower_file_url
+                        or "tif.gz" in lower_file_url
+                        or "locs.gz" in lower_file_url
+                        or "grn.xml.gz" in lower_file_url
+                        or "red.xml.gz" in lower_file_url
+                        # As far as I have seen, real Illumina files never come in
+                        # .csv, but plenty of irrelevant data does.
+                        or (sample_object.manufacturer == "ILLUMINA" and "csv.gz" in lower_file_url)
+                    ):
                         continue
 
                     # Sometimes, we are lied to about the data processing step.
-                    lower_file_url = supplementary_file_url.lower()
                     if (
                         ".cel" in lower_file_url
                         or ("_non_normalized.txt" in lower_file_url)
@@ -481,7 +486,7 @@ class GeoSurveyor(ExternalSourceSurveyor):
         return experiment_object, created_samples
 
     def discover_experiment_and_samples(self) -> (Experiment, List[Sample]):
-        """ Dispatches the surveyor, returns the results """
+        """Dispatches the surveyor, returns the results"""
 
         experiment_accession_code = SurveyJobKeyValue.objects.get(
             survey_job_id=self.survey_job.id, key__exact="experiment_accession_code"
