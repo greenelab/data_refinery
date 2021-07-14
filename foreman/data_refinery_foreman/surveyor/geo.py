@@ -244,8 +244,7 @@ class GeoSurveyor(ExternalSourceSurveyor):
         """
         # Cleaning up is tracked here: https://github.com/guma44/GEOparse/issues/41
         gse = GEOparse.get_GEO(experiment_accession_code, destdir=self.get_temp_path(), silent=True)
-        preprocessed_samples = harmony.preprocess_geo(gse.gsms.items())
-        harmonized_samples = harmony.harmonize(preprocessed_samples)
+        harmonizer = harmony.Harmonizer()
 
         # Create the experiment object
         try:
@@ -272,7 +271,6 @@ class GeoSurveyor(ExternalSourceSurveyor):
         # Othertimes, there is a single file with references to every sample in it.
         created_samples = []
         for sample_accession_code, sample in gse.gsms.items():
-
             try:
                 sample_object = Sample.objects.get(accession_code=sample_accession_code)
                 logger.debug(
@@ -311,9 +309,9 @@ class GeoSurveyor(ExternalSourceSurveyor):
 
                 self.set_platform_properties(sample_object, sample.metadata, gse)
 
-                GeoSurveyor._apply_harmonized_metadata_to_sample(
-                    sample_object, harmonized_samples[sample_object.title]
-                )
+                preprocessed_sample = harmony.preprocess_geo_sample(sample)
+                harmonized_sample = harmonizer.harmonize_sample(preprocessed_sample)
+                GeoSurveyor._apply_harmonized_metadata_to_sample(sample_object, harmonized_sample)
 
                 # Sample-level protocol_info
                 sample_object.protocol_info = self.get_sample_protocol_info(

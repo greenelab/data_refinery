@@ -70,6 +70,20 @@ class SurveyTestCase(TransactionTestCase):
         original_files = OriginalFile.objects.all()
         self.assertEqual(45, original_files.count())
 
+    @vcr.use_cassette("/home/user/data_store/cassettes/surveyor.geo.geo_survey_GSE6532.yaml")
+    @patch("data_refinery_foreman.surveyor.external_source.send_job")
+    def test_geo_survey_GSE6532(self, mock_send_task):
+        """This experiment didn't get surveyed correctly until refactoring harmonizer.
+
+        Seemed like a good test to make permanent.
+        """
+        self.prep_test("GSE6532")
+
+        geo_surveyor = GeoSurveyor(self.survey_job)
+        geo_surveyor.survey()
+
+        self.assertEqual(741, Sample.objects.all().count())
+
     @vcr.use_cassette("/home/user/data_store/cassettes/surveyor.geo.geo_survey_not_agilent.yaml")
     @patch("data_refinery_foreman.surveyor.external_source.send_job")
     def test_geo_survey_not_agilent(self, mock_send_task):

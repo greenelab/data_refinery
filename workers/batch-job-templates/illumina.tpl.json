@@ -1,5 +1,5 @@
 {
-    "jobDefinitionName": "${{USER}}_${{STAGE}}_ILLUMINA_${{RAM}}",
+    "jobDefinitionName": "${{USER}}_${{STAGE}}_ILLUMINA_TO_PCL_${{RAM}}",
     "timeout": {"attemptDurationSeconds": 10800},
     "type": "container",
     "parameters": {

@@ -331,9 +331,9 @@ class SraSurveyor(ExternalSourceSurveyor):
     @staticmethod
     def _apply_harmonized_metadata_to_sample(sample: Sample, metadata: dict):
         """Harmonizes the metadata and applies it to `sample`"""
-        sample.title = harmony.extract_title(metadata)
-        harmonized_sample = harmony.harmonize([metadata])
-        for key, value in harmonized_sample[sample.title].items():
+        harmonizer = harmony.Harmonizer()
+        harmonized_sample = harmonizer.harmonize_sample(metadata)
+        for key, value in harmonized_sample.items():
             setattr(sample, key, value)
 
     @staticmethod
